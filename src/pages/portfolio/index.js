@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./style.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Container, Row, Col } from "react-bootstrap";
-import { dataportfolio, meta } from "../../content_option";
+import { meta } from "../../content_option";
 
 export const Portfolio = () => {
+  const [dataportfolio, setDataportfolio] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          "https://steelzen-website.herokuapp.com/mydata/project/list"
+        );
+        const data = response.data;
+        setDataportfolio(data);
+      } catch (error) {
+        // Handle error if needed
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <HelmetProvider>
       <Container className="About-header">
@@ -23,10 +42,10 @@ export const Portfolio = () => {
           {dataportfolio.map((data, i) => {
             return (
               <div key={i} className="po_item">
-                <img src={data.img} alt="" />
+                <img src={data.img_src} alt="" />
                 <div className="content">
-                  <p>{data.description}</p>
-                  <a href={data.link}>view project</a>
+                  <p>{data.content}</p>
+                  <a href={data.site_link}>view project</a>
                 </div>
               </div>
             );
