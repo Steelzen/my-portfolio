@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./style.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Container, Row, Col } from "react-bootstrap";
@@ -6,11 +7,30 @@ import {
   dataabout,
   meta,
   worktimeline,
+  educations,
   skills,
   services,
 } from "../../content_option";
 
 export const About = () => {
+  const [aboutme, setAboutme] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          "https://steelzen-website.herokuapp.com/mydata/aboutme/list"
+        );
+        const data = response.data;
+        setAboutme(data[0]);
+      } catch (error) {
+        // Handle error if needed
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <HelmetProvider>
       <Container className="About-header">
@@ -31,7 +51,7 @@ export const About = () => {
           </Col>
           <Col lg="7" className="d-flex align-items-center">
             <div>
-              <p>{dataabout.aboutme}</p>
+              <p>{aboutme["summary"]}</p>
             </div>
           </Col>
         </Row>
@@ -46,6 +66,26 @@ export const About = () => {
                   return (
                     <tr key={i}>
                       <th scope="row">{data.jobtitle}</th>
+                      <td>{data.where}</td>
+                      <td>{data.date}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </Col>
+        </Row>
+        <Row className=" sec_sp">
+          <Col lg="5">
+            <h3 className="color_sec py-4">Education</h3>
+          </Col>
+          <Col lg="7">
+            <table className="table caption-top">
+              <tbody>
+                {educations.map((data, i) => {
+                  return (
+                    <tr key={i}>
+                      <th scope="row">{data.course}</th>
                       <td>{data.where}</td>
                       <td>{data.date}</td>
                     </tr>
@@ -79,7 +119,8 @@ export const About = () => {
             })}
           </Col>
         </Row>
-        <Row className="sec_sp">
+        {/* Coming soon */}
+        {/* <Row className="sec_sp">
           <Col lang="5">
             <h3 className="color_sec py-4">services</h3>
           </Col>
@@ -93,7 +134,7 @@ export const About = () => {
               );
             })}
           </Col>
-        </Row>
+        </Row> */}
       </Container>
     </HelmetProvider>
   );

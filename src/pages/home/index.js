@@ -1,11 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./style.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import Typewriter from "typewriter-effect";
-import { introdata, meta } from "../../content_option";
+import { introdata, meta, imageUrls } from "../../content_option";
 import { Link } from "react-router-dom";
+import * as THREE from "three";
+import { Canvas } from "@react-three/fiber";
+import { Preload } from "@react-three/drei";
+import ThreeMesh from "../../hooks/threeMesh";
 
 export const Home = () => {
+  const [aboutme, setAboutme] = useState([]);
+  // To check if the device is mobile
+  const isMobile = () => {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  };
+
+  const materials = imageUrls.map((imageUrl) => {
+    const texture = new THREE.TextureLoader().load(imageUrl);
+    return new THREE.MeshBasicMaterial({ map: texture });
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          "https://steelzen-website.herokuapp.com/mydata/aboutme/list"
+        );
+        const data = response.data;
+        setAboutme(data[0]);
+      } catch (error) {
+        // Handle error if needed
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <HelmetProvider>
       <section id="home" className="home">
@@ -37,7 +69,7 @@ export const Home = () => {
                     }}
                   />
                 </h1>
-                <p className="mb-1x">{introdata.description}</p>
+                <p className="mb-1x">{aboutme["introductory"]}</p>
                 <div className="intro_btn-action pb-5">
                   <Link to="/portfolio" className="text_2">
                     <div id="button_p" className="ac_btn btn ">
@@ -56,6 +88,19 @@ export const Home = () => {
                     </div>
                   </Link>
                 </div>
+              </div>
+              <div className="techstack-container">
+                {!isMobile() &&
+                  materials.map((material, index) => (
+                    <Canvas
+                      key={index}
+                      style={{ width: "100px", height: "130px" }}
+                      camera={{ position: [0, 0, 5], fov: 50 }}
+                    >
+                      <ThreeMesh map={material.map} />
+                      <Preload all />
+                    </Canvas>
+                  ))}
               </div>
             </div>
           </div>

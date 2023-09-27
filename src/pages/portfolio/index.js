@@ -45,7 +45,10 @@ export const Portfolio = () => {
                 <img src={data.img_src} alt="" />
                 <div className="content">
                   <p>{data.content}</p>
-                  <a href={data.site_link}>view project</a>
+                  <div className="link">
+                    <a href={data.site_link}>Demo</a>
+                    <a href={data.code_link}>Github</a>
+                  </div>
                 </div>
               </div>
             );
