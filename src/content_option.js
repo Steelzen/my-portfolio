@@ -2,6 +2,7 @@
 import reactLogo from "./assets/images/React-logo.png";
 import djangoLogo from "./assets/images/django-logo.jpg";
 import sqlLogo from "./assets/images/SQL-logo.png";
+import themeImg from "./assets/images/theme.webp";
 
 const imageUrls = [reactLogo, djangoLogo, sqlLogo];
 
@@ -20,7 +21,7 @@ const introdata = {
   },
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at nisl euismod urna bibendum",
-  your_img_url: "https://images.unsplash.com/photo-1514790193030-c89d266d5a9d",
+  your_img_url: themeImg,
 };
 
 const dataabout = {
