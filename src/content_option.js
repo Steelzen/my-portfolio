@@ -15,9 +15,9 @@ const meta = {
 const introdata = {
   title: "Hi, I’m Taehyung",
   animated: {
-    first: "I love tech",
-    second: "I love to learn new tech stacks",
-    third: "I develop cool applications",
+    first: "I have a great passion for software development",
+    second: "I love learning new technologies",
+    third: "I enjoy building new things",
   },
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at nisl euismod urna bibendum",
