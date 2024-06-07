@@ -36,6 +36,16 @@ const worktimeline = [
     where: "Parrotias",
     date: "2023",
   },
+  {
+    jobtitle: "Software Devloper",
+    where: "Upwork",
+    date: "2024",
+  },
+  {
+    jobtitle: "Software Engineer",
+    where: "Enplug",
+    date: "2024",
+  },
 ];
 
 const educations = [
