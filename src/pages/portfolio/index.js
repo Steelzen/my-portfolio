@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./style.css";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Container, Row, Col } from "react-bootstrap";
 import { meta } from "../../content_option";
 
+const PortfolioList = React.lazy(() => import("./PortfolioList"));
+
 export const Portfolio = () => {
-  const [dataportfolio, setDataportfolio] = useState([]);
+  const [ isLoaded, setIsLoaded ] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          "https://steelzen-website.herokuapp.com/mydata/project/list"
-        );
-        const data = response.data;
-        setDataportfolio(data);
-      } catch (error) {
-        // Handle error if needed
-      }
-    }
+    const loadComponents = async () => {
+      await Promise.all([
+        import("./PortfolioList"),
+      ]);
+      setIsLoaded(true);
+    };
 
-    fetchData();
+    loadComponents();
   }, []);
+
+  if(!isLoaded) return <div>Loading the page...</div>;
 
   return (
     <HelmetProvider>
@@ -38,23 +36,7 @@ export const Portfolio = () => {
             <hr className="t_border my-4 ml-0 text-left" />
           </Col>
         </Row>
-        <div className="mb-5 po_items_ho">
-          {dataportfolio.map((data, i) => {
-            return (
-              <div key={i} className="po_item">
-                <img src={data.img_src} alt="" />
-                <div className="content">
-                  <p>{data.content}</p>
-                  <p>{data.additional_info}</p>
-                  <div className="link">
-                    <a href={data.site_link}>Demo</a>
-                    <a href={data.code_link}>Github</a>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <PortfolioList />
       </Container>
     </HelmetProvider>
   );
